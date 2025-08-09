@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VHDL Basics Quiz</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { color: #2c3e50; }
+    .question { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .options label { display: block; margin-bottom: 5px; cursor: pointer; }
+    button { margin-top: 10px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    #result { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+    .badge { display: inline-block; padding: 8px 12px; border-radius: 5px; color: white; margin-left: 10px; }
+    .gold { background: gold; color: black; }
+    .silver { background: silver; color: black; }
+    .bronze { background: #cd7f32; }
+    .practice { background: #e74c3c; }
+</style>
+</head>
+<body>
+
+<h1>VHDL Basics Quiz</h1>
+<p>Answer the following 20 questions. Click "Submit Quiz" to see your final score and badge.</p>
+
+<div id="quiz"></div>
+<button id="submitBtn">Submit Quiz</button>
+<div id="result"></div>
+
+<script>
+const questions = [
+    {q: "1. What does an entity describe in VHDL?", o: ["The internal logic", "The I/O interface", "The testbench", "Simulation settings"], a: 1},
+    {q: "2. Which keyword is used to describe the internal behavior of a circuit?", o: ["entity", "architecture", "port", "library"], a: 1},
+    {q: "3. Which data type allows values 'U', 'X', '0', '1', 'Z', 'W', 'L', 'H', '-'?", o: ["bit", "std_logic", "integer", "unsigned"], a: 1},
+    {q: "4. Which operator assigns a value to a signal?", o: [":=", "<=", "=>", "&"], a: 1},
+    {q: "5. What is the default package for 'bit' type?", o: ["IEEE.std_logic_1164", "numeric_std", "standard", "std_logic_arith"], a: 2},
+    {q: "6. Which operator merges two vectors into one?", o: ["and", "or", "&", "+"], a: 2},
+    {q: "7. Which library is needed to use 'std_logic'?", o: ["library std;", "use IEEE.std_logic_1164.all;", "use std_logic.all;", "use logic.all;"], a: 1},
+    {q: "8. What does 'sll' stand for in VHDL?", o: ["Shift Left Logical", "Shift Left Linear", "Shift Left Loop", "Shift Line Logic"], a: 0},
+    {q: "9. Which operator gives the remainder with the sign of the divisor?", o: ["mod", "rem", "abs", "xor"], a: 0},
+    {q: "10. Which operator returns the absolute value?", o: ["mod", "abs", "rem", "**"], a: 1},
+    {q: "11. In 'unsigned' type, numbers are:", o: ["Only negative", "Only positive", "Non-negative integers", "Floating point"], a: 2},
+    {q: "12. What is the result type of 'abs' on signed numbers?", o: ["std_logic", "signed", "integer", "bit_vector"], a: 1},
+    {q: "13. What does 'rol' do?", o: ["Rotate Left", "Read Only Logic", "Right Output Load", "Reset Output Line"], a: 0},
+    {q: "14. Which is NOT a logical operator in VHDL?", o: ["xor", "nand", "xnor", "sub"], a: 3},
+    {q: "15. What is the output of '2 ** 3'?", o: ["5", "6", "8", "9"], a: 2},
+    {q: "16. What is the generic keyword used for?", o: ["Assigning signals", "Declaring constants for flexibility", "Looping", "Importing packages"], a: 1},
+    {q: "17. Which shift fills new positions with the leftmost bit?", o: ["sra", "sla", "sll", "rol"], a: 0},
+    {q: "18. The 'rem' operator returns a remainder with the sign of:", o: ["Divisor", "Dividend", "Zero", "First operand only"], a: 1},
+    {q: "19. Which of these is a valid concatenation of two 4-bit vectors?", o: ["vec1 and vec2", "vec1 & vec2", "vec1 or vec2", "vec1 + vec2"], a: 1},
+    {q: "20. In VHDL, which is correct for initializing a signal?", o: ["signal s : std_logic := '0';", "signal s : std_logic <= '0';", "signal s = '0';", "s := '0';"], a: 0}
+];
+
+const quizDiv = document.getElementById("quiz");
+questions.forEach((item, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+    qDiv.innerHTML = `<p><strong>${item.q}</strong></p>`;
+    
+    const optsDiv = document.createElement("div");
+    optsDiv.className = "options";
+    item.o.forEach((opt, i) => {
+        optsDiv.innerHTML += `
+            <label>
+                <input type="radio" name="q${index}" value="${i}"> ${opt}
+            </label>`;
+    });
+    
+    qDiv.appendChild(optsDiv);
+    quizDiv.appendChild(qDiv);
+});
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+    let score = 0;
+    questions.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected && parseInt(selected.value) === item.a) {
+            score++;
+        }
+    });
+
+    let badge = "";
+    let badgeClass = "";
+    if (score === 20) {
+        badge = "Gold - Perfect!";
+        badgeClass = "gold";
+    } else if (score >= 15) {
+        badge = "Silver - Great job!";
+        badgeClass = "silver";
+    } else if (score >= 10) {
+        badge = "Bronze - Good effort!";
+        badgeClass = "bronze";
+    } else {
+        badge = "Keep Practicing!";
+        badgeClass = "practice";
+    }
+
+    document.getElementById("result").innerHTML = 
+        `You scored ${score} / 20 <span class="badge ${badgeClass}">${badge}</span>`;
+});
+</script>
+
+</body>
+</html>
